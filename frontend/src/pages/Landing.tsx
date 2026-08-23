@@ -1,4 +1,4 @@
-import { ArrowUpRight } from 'lucide-react';
+import { ArrowUpRight, CheckCircle2, ShieldCheck, Sparkles } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 export function Landing() {
@@ -15,7 +15,7 @@ export function Landing() {
             </div>
 
             <div className="hidden items-center gap-2 text-xs font-medium uppercase tracking-[0.18em] text-[var(--ink-soft)] sm:flex">
-              <span className="h-2 w-2 rounded-full bg-[var(--accent)]" />
+              <span className="h-2 w-2 rounded-full bg-[var(--accent)] animate-pulse" />
               Live prediction model
             </div>
           </div>
@@ -51,86 +51,102 @@ export function Landing() {
         </div>
 
         <section className="mt-8 grid gap-4 lg:grid-cols-3">
-          <article className="rounded-[4px] border border-[var(--line)] bg-[#fdfdf9] p-5">
-            <div className="flex items-start justify-between font-mono text-[10px] uppercase tracking-[0.14em] text-[var(--ink-soft)]">
-              <span>Prediction quality</span>
-              <span>Live pipeline</span>
+          {/* Card 1: AI Model Engine */}
+          <article className="rounded-[8px] border border-[var(--line)] bg-[#fdfdf9] p-5 flex flex-col justify-between">
+            <div>
+              <div className="flex items-start justify-between font-mono text-[10px] uppercase tracking-[0.14em] text-[var(--ink-soft)]">
+                <span>AI Model Engine</span>
+                <span>Live Pipeline</span>
+              </div>
+              <div className="mt-4 flex items-center gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#cdeedc] text-[#1f5f46]">
+                  <Sparkles className="h-5 w-5" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold text-[var(--ink)]">Explainable Intelligence</h3>
+                  <p className="text-xs text-[var(--ink-soft)]">SHAP Feature Attribution</p>
+                </div>
+              </div>
+              <p className="mt-3 text-sm leading-6 text-[var(--ink-soft)]">
+                Model predictions powered by Gradient Boosting & XGBoost with SHAP feature attribution to explain key positive and negative performance factors.
+              </p>
             </div>
-            <div className="mt-3 flex items-end gap-2">
-              <p className="text-[52px] font-semibold leading-[0.95] tracking-[-0.04em] text-[var(--ink)]">92%</p>
-              <p className="mb-2 text-[20px] font-semibold text-[var(--ink-soft)]">trust</p>
-            </div>
-            <p className="mt-1 text-sm text-[var(--ink-soft)]">confidence window based on active model and current student inputs</p>
 
-            <div className="mt-4 inline-flex bg-[#ffe8bc] px-2 py-1 font-mono text-[10px] font-semibold uppercase tracking-[0.12em] text-[#936000]">
-              Explainability enabled
-            </div>
-
-            <div className="mt-4 flex items-center justify-between border-t border-[var(--line)] pt-3">
-              <span className="text-sm text-[var(--ink-soft)]">Status</span>
-              <span className="font-mono text-[10px] font-semibold uppercase tracking-[0.12em] text-[var(--accent)]">Operational</span>
+            <div className="mt-5 border-t border-[var(--line)] pt-3 flex items-center justify-between">
+              <span className="text-xs font-medium text-[var(--ink-soft)]">System Status</span>
+              <span className="inline-flex items-center gap-1.5 font-mono text-[10px] font-bold uppercase tracking-[0.12em] text-[var(--accent)]">
+                <CheckCircle2 className="h-3.5 w-3.5" /> Operational
+              </span>
             </div>
           </article>
 
-          <article className="rounded-[4px] border border-[var(--line)] bg-[#fdfdf9] p-5">
+          {/* Card 2: Behavioral Vectors */}
+          <article className="rounded-[8px] border border-[var(--line)] bg-[#fdfdf9] p-5">
             <div className="flex items-start justify-between font-mono text-[10px] uppercase tracking-[0.14em] text-[var(--ink-soft)]">
-              <span>Impact channels</span>
-              <span>Intervention reach</span>
+              <span>Behavioral Vectors</span>
+              <span>Early Warning</span>
             </div>
 
-            <div className="mt-4 space-y-4">
-              <div>
-                <div className="mb-1 flex items-center justify-between text-base text-[var(--ink)]">
-                  <span>Attendance health</span>
-                  <span className="font-semibold">73%</span>
+            <div className="mt-4 space-y-3.5">
+              <div className="rounded-[6px] border border-[var(--line)] bg-[var(--paper)] p-3">
+                <div className="flex items-center justify-between text-sm font-medium text-[var(--ink)]">
+                  <span>Attendance Health</span>
+                  <span className="inline-flex items-center gap-1 text-xs font-semibold text-[var(--accent)]">
+                    <ShieldCheck className="h-3.5 w-3.5" /> Active Monitoring
+                  </span>
                 </div>
-                <div className="h-2 bg-[#e7e9e1]">
-                  <div className="h-2 w-[73%] bg-[#cf6847]" />
-                </div>
-              </div>
-
-              <div>
-                <div className="mb-1 flex items-center justify-between text-base text-[var(--ink)]">
-                  <span>Assessment momentum</span>
-                  <span className="font-semibold">69%</span>
-                </div>
-                <div className="h-2 bg-[#e7e9e1]">
-                  <div className="h-2 w-[69%] bg-[#cf6847]" />
+                <div className="mt-2 h-1.5 w-full rounded-full bg-[#e7e9e1] overflow-hidden">
+                  <div className="h-full w-4/5 rounded-full bg-[var(--accent)]" />
                 </div>
               </div>
 
-              <div>
-                <div className="mb-1 flex items-center justify-between text-base text-[var(--ink)]">
-                  <span>Study consistency</span>
-                  <span className="font-semibold">3.2h / wk</span>
+              <div className="rounded-[6px] border border-[var(--line)] bg-[var(--paper)] p-3">
+                <div className="flex items-center justify-between text-sm font-medium text-[var(--ink)]">
+                  <span>Assessment Momentum</span>
+                  <span className="inline-flex items-center gap-1 text-xs font-semibold text-[#92400E]">
+                    Trajectory Mapping
+                  </span>
                 </div>
-                <div className="h-2 bg-[#e7e9e1]">
-                  <div className="h-2 w-[64%] bg-[var(--accent)]" />
+                <div className="mt-2 h-1.5 w-full rounded-full bg-[#e7e9e1] overflow-hidden">
+                  <div className="h-full w-3/4 rounded-full bg-[#cf6847]" />
+                </div>
+              </div>
+
+              <div className="rounded-[6px] border border-[var(--line)] bg-[var(--paper)] p-3">
+                <div className="flex items-center justify-between text-sm font-medium text-[var(--ink)]">
+                  <span>Study Consistency</span>
+                  <span className="inline-flex items-center gap-1 text-xs font-semibold text-[var(--accent)]">
+                    Pattern Analysis
+                  </span>
+                </div>
+                <div className="mt-2 h-1.5 w-full rounded-full bg-[#e7e9e1] overflow-hidden">
+                  <div className="h-full w-5/6 rounded-full bg-[var(--accent)]" />
                 </div>
               </div>
             </div>
           </article>
 
-          <article className="rounded-[4px] border border-[var(--line)] bg-[#fdfdf9] p-5">
+          {/* Card 3: Action Loop */}
+          <article className="rounded-[8px] border border-[var(--line)] bg-[#fdfdf9] p-5">
             <div className="mb-4 flex items-start justify-between font-mono text-[10px] uppercase tracking-[0.14em] text-[var(--ink-soft)]">
-              <span>How EduPulse helps</span>
-              <span>Action loop</span>
+              <span>How EduPulse Helps</span>
+              <span>Action Loop</span>
             </div>
 
-            <div className="space-y-4">
+            <div className="space-y-3.5">
               <div>
-                <p className="text-lg font-semibold text-[var(--ink)]">1. Predict</p>
-                <p className="mt-0.5 text-sm text-[var(--ink-soft)]">Estimate outcome and classify risk level from student profile data.</p>
+                <p className="text-base font-bold text-[var(--ink)]">1. Predict</p>
+                <p className="mt-0.5 text-xs text-[var(--ink-soft)]">Multi-level ML models evaluate academic and behavioral signals.</p>
               </div>
 
               <div>
-                <p className="text-lg font-semibold text-[var(--ink)]">2. Explain</p>
-                <p className="mt-0.5 text-sm text-[var(--ink-soft)]">Show which factors raised or lowered the predicted performance.</p>
+                <p className="text-base font-bold text-[var(--ink)]">2. Explain</p>
+                <p className="mt-0.5 text-xs text-[var(--ink-soft)]">SHAP breakdown reveals top positive and negative risk factors.</p>
               </div>
 
               <div>
-                <p className="text-lg font-semibold text-[var(--ink)]">3. Intervene</p>
-                <p className="mt-0.5 text-sm text-[var(--ink-soft)]">Recommend practical next steps mentors and students can apply immediately.</p>
+                <p className="text-base font-bold text-[var(--ink)]">3. Intervene</p>
+                <p className="mt-0.5 text-xs text-[var(--ink-soft)]">What-If scenario simulation and actionable guidance for early coaching.</p>
               </div>
             </div>
           </article>

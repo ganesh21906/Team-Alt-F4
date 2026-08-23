@@ -1,0 +1,53 @@
+{
+  "tasks": {
+    "ST-SCH-0406": [
+      {
+        "id": "task-ST-SCH-0406-0",
+        "text": "Focus on improving First Period Grade to boost predicted outcome.",
+        "status": "todo",
+        "date": "2026-08-23"
+      },
+      {
+        "id": "task-ST-SCH-0406-1",
+        "text": "Focus on improving Absences Per Study Hour to boost predicted outcome.",
+        "status": "todo",
+        "date": "2026-08-23"
+      },
+      {
+        "id": "task-ST-SCH-0406-2",
+        "text": "Focus on improving Study-to-Leisure Time Ratio to boost predicted outcome.",
+        "status": "todo",
+        "date": "2026-08-23"
+      }
+    ],
+    "ST-SCH-0033": [
+      {
+        "id": "task-ST-SCH-0033-0",
+        "text": "Focus on improving First Period Grade to boost predicted outcome.",
+        "status": "todo",
+        "date": "2026-08-23"
+      },
+      {
+        "id": "task-ST-SCH-0033-1",
+        "text": "Improve class attendance rate to prevent missing critical lectures.",
+        "status": "todo",
+        "date": "2026-08-23"
+      },
+      {
+        "id": "task-ST-SCH-0033-2",
+        "text": "Focus on improving Absences Per Study Hour to boost predicted outcome.",
+        "status": "todo",
+        "date": "2026-08-23"
+      }
+    ]
+  },
+  "interventions": {
+    "ST-SCH-0406": []
+  },
+  "thresholds": {
+    "school_high": 10.0,
+    "school_medium": 14.0,
+    "college_high": 60.0,
+    "college_medium": 80.0
+  }
+}

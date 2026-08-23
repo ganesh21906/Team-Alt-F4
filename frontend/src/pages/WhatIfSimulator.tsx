@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
-import { ArrowRight, Gauge, Sparkles } from 'lucide-react';
+import { ArrowRight, BookOpen, Gauge, School, Sparkles } from 'lucide-react';
 
 import { Button } from '../components/ui/Button';
 import { api } from '../lib/api';
 import type { WhatIfInput, WhatIfResult } from '../lib/types';
+import { useSessionStore } from '../store/sessionStore';
 
 const sliderStyle = {
   accentColor: 'var(--accent)',
@@ -23,6 +24,9 @@ export function WhatIfSimulator() {
   const [prediction, setPrediction] = useState<WhatIfResult>(emptyResult);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  const { studentLevel } = useSessionStore();
+
+  const isSchool = studentLevel === 'school';
 
   useEffect(() => {
     let active = true;
@@ -57,12 +61,18 @@ export function WhatIfSimulator() {
   return (
     <div className="grid gap-6 xl:grid-cols-[1fr_0.9fr]">
       <div className="rounded-[12px] border border-[var(--line)] bg-[var(--paper)] p-6">
-        <div className="flex items-center gap-3">
-          <Gauge className="h-5 w-5 text-[var(--accent)]" />
-          <div>
-            <p className="eyebrow">Scenario planner</p>
-            <h1 className="mt-1 text-3xl font-black tracking-[-0.06em] text-[var(--ink)]">What-if simulator</h1>
+        <div className="flex items-center justify-between gap-3">
+          <div className="flex items-center gap-3">
+            <Gauge className="h-5 w-5 text-[var(--accent)]" />
+            <div>
+              <p className="eyebrow">Scenario planner</p>
+              <h1 className="mt-1 text-3xl font-black tracking-[-0.06em] text-[var(--ink)]">What-if simulator</h1>
+            </div>
           </div>
+          <span className="inline-flex items-center gap-1.5 rounded-full border border-[var(--line)] bg-[var(--accent-soft)] px-3 py-1 text-xs font-bold text-[var(--accent)]">
+            {isSchool ? <School className="h-3.5 w-3.5" /> : <BookOpen className="h-3.5 w-3.5" />}
+            {isSchool ? 'School Model (0-20)' : 'College Model (GPA / %)'}
+          </span>
         </div>
 
         <div className="mt-8 space-y-6">
@@ -112,15 +122,17 @@ export function WhatIfSimulator() {
             <div className="mt-8 rounded-[12px] border border-[var(--line)] bg-[var(--paper)] p-5">
               <p className="text-xs uppercase tracking-[0.18em] text-[var(--ink-soft)]">{prediction.scenarioLabel}</p>
               <div className="mt-3 flex items-end gap-3">
-                <span className="text-5xl font-black tracking-[-0.08em] text-[var(--ink)]">{prediction.simulatedScore}</span>
-                <span className="pb-1 text-sm font-semibold text-[var(--ink-soft)]">/100</span>
+                <span className="text-5xl font-black tracking-[-0.08em] text-[var(--ink)]">
+                  {isSchool ? (prediction.simulatedScore * 0.2).toFixed(1) : prediction.simulatedScore}
+                </span>
+                <span className="pb-1 text-sm font-semibold text-[var(--ink-soft)]">{isSchool ? '/20' : '/100'}</span>
               </div>
             </div>
 
             <div className="mt-6 space-y-3 text-sm text-[var(--ink-soft)]">
               <div className="flex items-center justify-between rounded-[12px] border border-[var(--line)] bg-[var(--paper)] p-3">
                 <span>Current performance</span>
-                <span className="font-semibold text-[var(--ink)]">{prediction.currentScore}</span>
+                <span className="font-semibold text-[var(--ink)]">{isSchool ? (prediction.currentScore * 0.2).toFixed(1) : prediction.currentScore}</span>
               </div>
               <div className="flex items-center justify-between rounded-[12px] border border-[var(--line)] bg-[var(--paper)] p-3">
                 <span>Projected change</span>

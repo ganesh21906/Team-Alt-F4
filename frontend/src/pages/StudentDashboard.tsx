@@ -1,4 +1,4 @@
-import { AlertTriangle, ArrowUpRight, BookOpenCheck, CalendarDays, Clock3, GraduationCap, TrendingUp } from 'lucide-react';
+import { AlertTriangle, ArrowUpRight, BookOpen, BookOpenCheck, CalendarDays, Clock3, GraduationCap, School, TrendingUp } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -9,6 +9,7 @@ import { RiskBadge } from '../components/cards/RiskBadge';
 import { Button } from '../components/ui/Button';
 import { api } from '../lib/api';
 import type { Student } from '../lib/types';
+import { useSessionStore } from '../store/sessionStore';
 
 function LoadingState() {
   return (
@@ -38,6 +39,7 @@ export function StudentDashboard() {
   const [student, setStudent] = useState<Student | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  const { studentLevel } = useSessionStore();
 
   useEffect(() => {
     let mounted = true;
@@ -67,6 +69,8 @@ export function StudentDashboard() {
   if (error) return <ErrorState />;
   if (!student) return <EmptyState />;
 
+  const isSchool = studentLevel === 'school';
+
   return (
     <div className="space-y-6">
       <section className="rounded-[12px] border border-[var(--line)] bg-[var(--paper)] p-6 sm:p-7">
@@ -74,9 +78,15 @@ export function StudentDashboard() {
           <div className="flex items-center gap-4">
             <img src={student.avatarUrl} alt={student.name} className="h-16 w-16 rounded-full object-cover" />
             <div>
-              <p className="eyebrow">Welcome back</p>
+              <div className="flex items-center gap-2">
+                <p className="eyebrow">Welcome back</p>
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-[var(--line)] bg-[var(--accent-soft)] px-2.5 py-0.5 text-xs font-semibold text-[var(--accent)]">
+                  {isSchool ? <School className="h-3 w-3" /> : <BookOpen className="h-3 w-3" />}
+                  {isSchool ? 'School Student' : 'College Student'}
+                </span>
+              </div>
               <h1 className="mt-1 text-3xl font-black tracking-[-0.06em] text-[var(--ink)]">{student.name}</h1>
-              <p className="text-sm text-[var(--ink-soft)]">{student.className}</p>
+              <p className="text-sm text-[var(--ink-soft)]">{student.className} • {isSchool ? 'Secondary Education (0-20 scale)' : 'Higher Education (GPA / 0-100 scale)'}</p>
             </div>
           </div>
 
@@ -90,7 +100,7 @@ export function StudentDashboard() {
       </section>
 
       <section className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
-        <MetricCard label="Predicted performance" value={`${student.performanceScore}`} hint="Model-predicted academic outcome" accent="blue" icon={<TrendingUp className="h-5 w-5 text-[var(--accent)]" />} />
+        <MetricCard label="Predicted performance" value={isSchool ? `${(student.performanceScore * 0.2).toFixed(1)} / 20` : `${student.performanceScore}%`} hint="Model-predicted academic outcome" accent="blue" icon={<TrendingUp className="h-5 w-5 text-[var(--accent)]" />} />
         <MetricCard label="GPA" value={student.gpa.toFixed(1)} hint="Current benchmark" accent="purple" icon={<GraduationCap className="h-5 w-5 text-[var(--accent)]" />} />
         <MetricCard label="Attendance" value={`${student.attendancePct}%`} hint="Current attendance" accent="emerald" icon={<Clock3 className="h-5 w-5 text-[var(--risk-low)]" />} />
         <MetricCard label="Risk score" value={String(student.riskScore)} hint="Model risk intensity" accent="amber" icon={<AlertTriangle className="h-5 w-5 text-[var(--risk-mid)]" />} />
@@ -197,6 +207,10 @@ export function StudentDashboard() {
 
           <div className="space-y-4 text-sm text-[var(--ink-soft)]">
             <div className="flex items-center justify-between rounded-[12px] border border-[var(--line)] bg-[var(--paper)] p-3">
+              <span>Education Level</span>
+              <span className="font-semibold text-[var(--ink)]">{isSchool ? 'School (Secondary)' : 'College (University)'}</span>
+            </div>
+            <div className="flex items-center justify-between rounded-[12px] border border-[var(--line)] bg-[var(--paper)] p-3">
               <span>Current GPA</span>
               <span className="font-semibold text-[var(--ink)]">{student.gpa.toFixed(1)}</span>
             </div>
@@ -207,10 +221,6 @@ export function StudentDashboard() {
             <div className="flex items-center justify-between rounded-[12px] border border-[var(--line)] bg-[var(--paper)] p-3">
               <span>Strongest subject</span>
               <span className="font-semibold text-[var(--ink)]">{student.subjects.reduce((best, current) => (current.currentScore > best.currentScore ? current : best), student.subjects[0]).subject}</span>
-            </div>
-            <div className="flex items-center justify-between rounded-[12px] border border-[var(--line)] bg-[var(--paper)] p-3">
-              <span>Priority focus</span>
-              <span className="font-semibold text-[var(--ink)]">{student.subjects.reduce((lowest, current) => (current.currentScore < lowest.currentScore ? current : lowest), student.subjects[0]).subject}</span>
             </div>
           </div>
         </div>

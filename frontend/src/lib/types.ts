@@ -1,6 +1,7 @@
 export type RiskLevel = 'low' | 'medium' | 'high';
 export type Trend = 'up' | 'down' | 'flat';
 export type UserRole = 'student' | 'mentor';
+export type StudentLevel = 'school' | 'college';
 export type RiskImpact = 'positive' | 'negative';
 export type RecommendationPriority = 'low' | 'medium' | 'high';
 
@@ -41,6 +42,7 @@ export interface Student {
   name: string;
   className: string;
   email: string;
+  studentLevel?: StudentLevel;
   avatarUrl?: string;
   gpa: number;
   attendancePct: number;
@@ -59,6 +61,7 @@ export interface WhatIfInput {
   attendancePct: number;
   assessmentScore: number;
   assignmentScore: number;
+  studyHours?: number;
 }
 
 export interface WhatIfResult {

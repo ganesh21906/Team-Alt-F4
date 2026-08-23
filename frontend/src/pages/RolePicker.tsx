@@ -1,13 +1,15 @@
-import { ArrowRight, GraduationCap, LockKeyhole, ShieldCheck } from 'lucide-react';
+import { ArrowRight, BookOpen, GraduationCap, LockKeyhole, School, ShieldCheck } from 'lucide-react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import type { StudentLevel } from '../lib/types';
 import { useSessionStore } from '../store/sessionStore';
 
 export function RolePicker() {
   const navigate = useNavigate();
   const { login } = useSessionStore();
   const [selectedRole, setSelectedRole] = useState<'student' | 'mentor' | null>(null);
+  const [studentLevel, setStudentLevel] = useState<StudentLevel>('school');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -22,7 +24,7 @@ export function RolePicker() {
       return;
     }
 
-    login(selectedRole);
+    login(selectedRole, studentLevel);
     navigate(selectedRole === 'student' ? '/student/dashboard' : '/mentor/dashboard');
   };
 
@@ -73,7 +75,7 @@ export function RolePicker() {
         </div>
 
         {selectedRole ? (
-          <form onSubmit={handleSubmit} className="mt-8 rounded-[12px] border border-[var(--line)] bg-[var(--paper)] p-6">
+          <form onSubmit={handleSubmit} className="mt-8 rounded-[12px] border border-[var(--line)] bg-[var(--paper)] p-6 space-y-6">
             <div className="flex items-center gap-3">
               <div className="flex h-10 w-10 items-center justify-center rounded-[12px] bg-[var(--ink)] text-[var(--paper)]">
                 <LockKeyhole className="h-4 w-4" />
@@ -84,14 +86,60 @@ export function RolePicker() {
               </div>
             </div>
 
-            <div className="mt-5 grid gap-4 md:grid-cols-2">
+            {/* Student Education Level Selector */}
+            {selectedRole === 'student' && (
+              <div className="rounded-[12px] border border-[var(--line)] bg-[var(--paper)] p-4">
+                <label className="block text-xs font-bold uppercase tracking-wider text-[var(--ink-soft)] mb-3">
+                  Select Education Level
+                </label>
+                <div className="grid gap-3 sm:grid-cols-2">
+                  <button
+                    type="button"
+                    onClick={() => setStudentLevel('school')}
+                    className={`flex items-center gap-3 rounded-[10px] border p-3.5 text-left transition ${
+                      studentLevel === 'school'
+                        ? 'border-[var(--accent)] bg-[var(--accent-soft)] ring-2 ring-[var(--accent)]/20'
+                        : 'border-[var(--line)] bg-[var(--paper)] hover:border-[var(--ink-soft)]'
+                    }`}
+                  >
+                    <div className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg ${studentLevel === 'school' ? 'bg-[var(--accent)] text-white' : 'bg-[var(--line)] text-[var(--ink)]'}`}>
+                      <School className="h-5 w-5" />
+                    </div>
+                    <div>
+                      <p className="text-sm font-bold text-[var(--ink)]">School Student</p>
+                      <p className="text-xs text-[var(--ink-soft)]">High School / Secondary (0-20 score scale)</p>
+                    </div>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setStudentLevel('college')}
+                    className={`flex items-center gap-3 rounded-[10px] border p-3.5 text-left transition ${
+                      studentLevel === 'college'
+                        ? 'border-[var(--accent)] bg-[var(--accent-soft)] ring-2 ring-[var(--accent)]/20'
+                        : 'border-[var(--line)] bg-[var(--paper)] hover:border-[var(--ink-soft)]'
+                    }`}
+                  >
+                    <div className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg ${studentLevel === 'college' ? 'bg-[var(--accent)] text-white' : 'bg-[var(--line)] text-[var(--ink)]'}`}>
+                      <BookOpen className="h-5 w-5" />
+                    </div>
+                    <div>
+                      <p className="text-sm font-bold text-[var(--ink)]">College Student</p>
+                      <p className="text-xs text-[var(--ink-soft)]">University / Higher Ed (GPA / 0-100 scale)</p>
+                    </div>
+                  </button>
+                </div>
+              </div>
+            )}
+
+            <div className="grid gap-4 md:grid-cols-2">
               <label className="block text-sm font-medium text-[var(--ink)]">
                 Email
                 <input
                   type="email"
                   value={email}
                   onChange={(event) => setEmail(event.target.value)}
-                  placeholder={selectedRole === 'student' ? 'student@edupulse.ai' : 'mentor@edupulse.ai'}
+                  placeholder={selectedRole === 'student' ? `${studentLevel}@edupulse.ai` : 'mentor@edupulse.ai'}
                   className="mt-2 w-full rounded-[12px] border border-[var(--line)] bg-[var(--paper)] px-4 py-3 outline-none ring-0 transition"
                   required
                 />
@@ -110,7 +158,7 @@ export function RolePicker() {
               </label>
             </div>
 
-            <div className="mt-6 flex flex-wrap items-center justify-between gap-3">
+            <div className="flex flex-wrap items-center justify-between gap-3 pt-2">
               <p className="text-sm text-[var(--ink-soft)]">Demo access: any valid email and password will work.</p>
               <button
                 type="submit"

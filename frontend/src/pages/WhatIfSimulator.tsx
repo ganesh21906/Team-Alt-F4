@@ -35,7 +35,7 @@ export function WhatIfSimulator() {
       setLoading(true);
       setError(false);
       try {
-        const result = await api.predictWhatIf(input);
+        const result = await api.predictWhatIf(input, studentLevel);
         if (active) {
           setPrediction(result);
           setLoading(false);
@@ -52,7 +52,7 @@ export function WhatIfSimulator() {
     return () => {
       active = false;
     };
-  }, [input]);
+  }, [input, studentLevel]);
 
   const updateField = (field: keyof WhatIfInput, value: number) => {
     setInput((current) => ({ ...current, [field]: value }));

@@ -46,7 +46,7 @@ export function StudentDashboard() {
 
     const load = async () => {
       try {
-        const result = await api.getStudentProfile();
+        const result = await api.getStudentProfile(studentLevel);
         if (mounted) {
           setStudent(result);
           setLoading(false);
@@ -63,7 +63,7 @@ export function StudentDashboard() {
     return () => {
       mounted = false;
     };
-  }, []);
+  }, [studentLevel]);
 
   if (loading) return <LoadingState />;
   if (error) return <ErrorState />;

@@ -1,4 +1,4 @@
-import { ArrowRight, BookOpen, GraduationCap, LockKeyhole, School, ShieldCheck } from 'lucide-react';
+import { ArrowRight, BookOpen, GraduationCap, Lock, School, ShieldCheck, UserCheck } from 'lucide-react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -29,148 +29,157 @@ export function RolePicker() {
   };
 
   return (
-    <div className="mx-auto max-w-[1040px] px-6 py-12">
-      <div className="rounded-[24px] border border-white/10 bg-slate-900/80 p-8 sm:p-11 backdrop-blur-xl shadow-2xl shadow-black/60">
-        <p className="eyebrow">CHOOSE YOUR ACCESS</p>
-        <h1 className="mt-3 text-3xl font-black tracking-[-0.04em] text-transparent bg-clip-text bg-gradient-to-r from-slate-100 via-blue-100 to-indigo-200 sm:text-4xl">
-          Continue as a student or mentor.
-        </h1>
+    <div className="min-h-[calc(100vh-65px)] bg-[#0F172A] py-12">
+      <div className="mx-auto max-w-[920px] px-6">
+        <div className="rounded-2xl border border-slate-800 bg-slate-900/90 p-8 shadow-xl">
+          <div className="text-center">
+            <span className="eyebrow-label">ENTERPRISE PORTAL ACCESS</span>
+            <h1 className="mt-2 text-2xl font-bold tracking-tight text-white sm:text-3xl">
+              Select Your Access Role
+            </h1>
+            <p className="mt-2 text-sm text-slate-400">
+              Choose your profile type to proceed to student analytics or mentor intervention console.
+            </p>
+          </div>
 
-        <div className="mt-8 grid gap-5 md:grid-cols-2">
-          <button
-            type="button"
-            onClick={() => handleRoleSelect('student')}
-            className={`group rounded-[16px] border p-6 text-left transition-all duration-300 ${
-              selectedRole === 'student'
-                ? 'border-blue-500 bg-blue-950/40 ring-1 ring-blue-500/50 shadow-lg shadow-blue-500/10'
-                : 'border-white/10 bg-slate-950/50 hover:border-blue-400/40 hover:-translate-y-1'
-            }`}
-          >
-            <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-[12px] bg-blue-500/15 text-blue-400 border border-blue-500/20">
-              <GraduationCap className="h-6 w-6" />
-            </div>
-            <h2 className="text-2xl font-bold text-slate-100">I’m a Student</h2>
-            <p className="mt-3 text-sm leading-7 text-slate-400">See your live performance forecast, review recommendations, and explore what-if improvements.</p>
-            <div className="mt-6 inline-flex items-center gap-2 text-sm font-bold text-blue-400">
-              Select student access <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
-            </div>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => handleRoleSelect('mentor')}
-            className={`group rounded-[16px] border p-6 text-left transition-all duration-300 ${
-              selectedRole === 'mentor'
-                ? 'border-indigo-500 bg-indigo-950/40 ring-1 ring-indigo-500/50 shadow-lg shadow-indigo-500/10'
-                : 'border-white/10 bg-slate-950/50 hover:border-indigo-400/40 hover:-translate-y-1'
-            }`}
-          >
-            <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-[12px] bg-indigo-500/15 text-indigo-400 border border-indigo-500/20">
-              <ShieldCheck className="h-6 w-6" />
-            </div>
-            <h2 className="text-2xl font-bold text-slate-100">I’m a Mentor</h2>
-            <p className="mt-3 text-sm leading-7 text-slate-400">Track cohort health, prioritize interventions, and drill into a student’s profile with context.</p>
-            <div className="mt-6 inline-flex items-center gap-2 text-sm font-bold text-indigo-400">
-              Select mentor access <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
-            </div>
-          </button>
-        </div>
-
-        {selectedRole ? (
-          <form onSubmit={handleSubmit} className="mt-8 rounded-[16px] border border-white/10 bg-slate-950/60 p-6 sm:p-7 space-y-6">
-            <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-[12px] bg-blue-600 text-white shadow-md shadow-blue-500/30">
-                <LockKeyhole className="h-5 w-5" />
+          <div className="mt-8 grid gap-4 md:grid-cols-2">
+            <button
+              type="button"
+              onClick={() => handleRoleSelect('student')}
+              className={`pro-card p-6 text-left transition ${
+                selectedRole === 'student'
+                  ? 'border-indigo-500 bg-slate-800/80 ring-1 ring-indigo-500/40'
+                  : 'hover:border-slate-700 bg-slate-900/40'
+              }`}
+            >
+              <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
+                <GraduationCap className="h-6 w-6" />
               </div>
-              <div>
-                <p className="eyebrow">AUTHENTICATION</p>
-                <h2 className="text-xl font-bold text-slate-100">Secure access for {selectedRole === 'student' ? 'students' : 'mentors'}</h2>
+              <h2 className="mt-4 text-lg font-bold text-white">Student Portal</h2>
+              <p className="mt-2 text-xs leading-relaxed text-slate-400">
+                View predicted scores, transparent SHAP feature breakdowns, and test What-If scenarios.
+              </p>
+              <div className="mt-4 inline-flex items-center gap-1.5 text-xs font-semibold text-indigo-400">
+                Select Student Role <ArrowRight className="h-3.5 w-3.5" />
               </div>
-            </div>
+            </button>
 
-            {/* Student Education Level Selector */}
-            {selectedRole === 'student' && (
-              <div className="rounded-[14px] border border-white/10 bg-slate-900/80 p-4">
-                <label className="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-3">
-                  Select Education Level
-                </label>
-                <div className="grid gap-3 sm:grid-cols-2">
-                  <button
-                    type="button"
-                    onClick={() => setStudentLevel('school')}
-                    className={`flex items-center gap-3 rounded-[12px] border p-4 text-left transition-all ${
-                      studentLevel === 'school'
-                        ? 'border-blue-500 bg-blue-950/50 ring-1 ring-blue-500/40 text-white'
-                        : 'border-white/10 bg-slate-950/50 text-slate-300 hover:border-slate-700'
-                    }`}
-                  >
-                    <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg ${studentLevel === 'school' ? 'bg-blue-600 text-white shadow-md shadow-blue-500/30' : 'bg-slate-800 text-slate-400'}`}>
-                      <School className="h-5 w-5" />
-                    </div>
-                    <div>
-                      <p className="text-sm font-bold text-slate-100">School Student</p>
-                      <p className="text-xs text-slate-400">High School / Secondary (0-20 score scale)</p>
-                    </div>
-                  </button>
+            <button
+              type="button"
+              onClick={() => handleRoleSelect('mentor')}
+              className={`pro-card p-6 text-left transition ${
+                selectedRole === 'mentor'
+                  ? 'border-indigo-500 bg-slate-800/80 ring-1 ring-indigo-500/40'
+                  : 'hover:border-slate-700 bg-slate-900/40'
+              }`}
+            >
+              <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
+                <ShieldCheck className="h-6 w-6" />
+              </div>
+              <h2 className="mt-4 text-lg font-bold text-white">Mentor Console</h2>
+              <p className="mt-2 text-xs leading-relaxed text-slate-400">
+                Monitor student cohort health, identify at-risk learners, and track targeted interventions.
+              </p>
+              <div className="mt-4 inline-flex items-center gap-1.5 text-xs font-semibold text-indigo-400">
+                Select Mentor Role <ArrowRight className="h-3.5 w-3.5" />
+              </div>
+            </button>
+          </div>
 
-                  <button
-                    type="button"
-                    onClick={() => setStudentLevel('college')}
-                    className={`flex items-center gap-3 rounded-[12px] border p-4 text-left transition-all ${
-                      studentLevel === 'college'
-                        ? 'border-indigo-500 bg-indigo-950/50 ring-1 ring-indigo-500/40 text-white'
-                        : 'border-white/10 bg-slate-950/50 text-slate-300 hover:border-slate-700'
-                    }`}
-                  >
-                    <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg ${studentLevel === 'college' ? 'bg-indigo-600 text-white shadow-md shadow-indigo-500/30' : 'bg-slate-800 text-slate-400'}`}>
-                      <BookOpen className="h-5 w-5" />
-                    </div>
-                    <div>
-                      <p className="text-sm font-bold text-slate-100">College Student</p>
-                      <p className="text-xs text-slate-400">University / Higher Ed (GPA / 0-100 scale)</p>
-                    </div>
-                  </button>
+          {selectedRole && (
+            <form onSubmit={handleSubmit} className="mt-8 rounded-xl border border-slate-800 bg-slate-950/60 p-6 space-y-5">
+              <div className="flex items-center gap-3 border-b border-slate-800 pb-4">
+                <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-indigo-600 text-white">
+                  <Lock className="h-4 w-4" />
+                </div>
+                <div>
+                  <h3 className="text-base font-bold text-white">
+                    Sign in to {selectedRole === 'student' ? 'Student Portal' : 'Mentor Console'}
+                  </h3>
+                  <p className="text-xs text-slate-400">Enter institutional credentials to continue</p>
                 </div>
               </div>
-            )}
 
-            <div className="grid gap-4 md:grid-cols-2">
-              <label className="block text-sm font-semibold text-slate-200">
-                Email
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(event) => setEmail(event.target.value)}
-                  placeholder={selectedRole === 'student' ? `${studentLevel}@edupulse.ai` : 'mentor@edupulse.ai'}
-                  className="mt-2 w-full rounded-[12px] border border-white/10 bg-slate-900 px-4 py-3 text-slate-100 placeholder-slate-500 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
-                  required
-                />
-              </label>
+              {/* Student Education Level Selector */}
+              {selectedRole === 'student' && (
+                <div className="rounded-lg border border-slate-800 bg-slate-900/80 p-4">
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-3">
+                    Institutional Education Subsystem
+                  </label>
+                  <div className="grid gap-3 sm:grid-cols-2">
+                    <button
+                      type="button"
+                      onClick={() => setStudentLevel('school')}
+                      className={`flex items-center gap-3 rounded-lg border p-3.5 text-left transition ${
+                        studentLevel === 'school'
+                          ? 'border-indigo-500 bg-indigo-950/50 text-white'
+                          : 'border-slate-800 bg-slate-900 text-slate-400 hover:border-slate-700'
+                      }`}
+                    >
+                      <School className={`h-5 w-5 shrink-0 ${studentLevel === 'school' ? 'text-indigo-400' : 'text-slate-500'}`} />
+                      <div>
+                        <p className="text-xs font-bold text-slate-200">Secondary School</p>
+                        <p className="text-[11px] text-slate-400">G1-G3 scale (0-20 marks)</p>
+                      </div>
+                    </button>
 
-              <label className="block text-sm font-semibold text-slate-200">
-                Password
-                <input
-                  type="password"
-                  value={password}
-                  onChange={(event) => setPassword(event.target.value)}
-                  placeholder="Enter secure password"
-                  className="mt-2 w-full rounded-[12px] border border-white/10 bg-slate-900 px-4 py-3 text-slate-100 placeholder-slate-500 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
-                  required
-                />
-              </label>
-            </div>
+                    <button
+                      type="button"
+                      onClick={() => setStudentLevel('college')}
+                      className={`flex items-center gap-3 rounded-lg border p-3.5 text-left transition ${
+                        studentLevel === 'college'
+                          ? 'border-indigo-500 bg-indigo-950/50 text-white'
+                          : 'border-slate-800 bg-slate-900 text-slate-400 hover:border-slate-700'
+                      }`}
+                    >
+                      <BookOpen className={`h-5 w-5 shrink-0 ${studentLevel === 'college' ? 'text-indigo-400' : 'text-slate-500'}`} />
+                      <div>
+                        <p className="text-xs font-bold text-slate-200">Higher Education / College</p>
+                        <p className="text-[11px] text-slate-400">GPA / Semester Grade scale</p>
+                      </div>
+                    </button>
+                  </div>
+                </div>
+              )}
 
-            <div className="flex flex-wrap items-center justify-between gap-3 pt-2">
-              <p className="text-xs text-slate-400">Demo access: any valid email and password will work.</p>
-              <button
-                type="submit"
-                className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-3 text-sm font-bold text-white shadow-lg shadow-blue-500/25 transition hover:from-blue-500 hover:to-indigo-500 hover:-translate-y-0.5"
-              >
-                Continue to dashboard <ArrowRight className="h-4 w-4" />
-              </button>
-            </div>
-          </form>
-        ) : null}
+              <div className="grid gap-4 md:grid-cols-2">
+                <div>
+                  <label className="block text-xs font-semibold text-slate-300 mb-1.5">Institutional Email</label>
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={(event) => setEmail(event.target.value)}
+                    placeholder={selectedRole === 'student' ? `${studentLevel}@edupulse.ai` : 'mentor@edupulse.ai'}
+                    className="w-full"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold text-slate-300 mb-1.5">Password</label>
+                  <input
+                    type="password"
+                    value={password}
+                    onChange={(event) => setPassword(event.target.value)}
+                    placeholder="••••••••••••"
+                    className="w-full"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div className="flex items-center justify-between pt-2">
+                <p className="text-xs text-slate-500">Hackathon demo mode: any valid email format will log in.</p>
+                <button
+                  type="submit"
+                  className="btn-primary inline-flex items-center gap-2 text-xs"
+                >
+                  Continue to Portal <ArrowRight className="h-3.5 w-3.5" />
+                </button>
+              </div>
+            </form>
+          )}
+        </div>
       </div>
     </div>
   );

@@ -1,14 +1,9 @@
 import { useEffect, useState } from 'react';
-import { ArrowRight, BookOpen, Gauge, School, Sparkles } from 'lucide-react';
+import { ArrowRight, BookOpen, CheckCircle, Gauge, HelpCircle, School, Sparkles } from 'lucide-react';
 
-import { Button } from '../components/ui/Button';
 import { api } from '../lib/api';
 import type { WhatIfInput, WhatIfResult } from '../lib/types';
 import { useSessionStore } from '../store/sessionStore';
-
-const sliderStyle = {
-  accentColor: 'var(--accent)',
-};
 
 const emptyResult: WhatIfResult = {
   currentScore: 0,
@@ -16,7 +11,7 @@ const emptyResult: WhatIfResult = {
   predictedRisk: 'low',
   deltaFromCurrent: 0,
   scenarioLabel: 'Model-simulated scenario',
-  explanation: 'This result is a model estimate and not a guaranteed future outcome.',
+  explanation: 'This result is a model estimate based on parameter sensitivities.',
 };
 
 export function WhatIfSimulator() {
@@ -59,33 +54,43 @@ export function WhatIfSimulator() {
   };
 
   return (
-    <div className="grid gap-6 xl:grid-cols-[1fr_0.9fr]">
-      <div className="rounded-[12px] border border-[var(--line)] bg-[var(--paper)] p-6">
-        <div className="flex items-center justify-between gap-3">
+    <div className="grid gap-6 xl:grid-cols-[1.1fr_0.9fr]">
+      {/* Slider Controls */}
+      <div className="pro-card p-6">
+        <div className="flex items-center justify-between gap-3 border-b border-slate-800 pb-4">
           <div className="flex items-center gap-3">
-            <Gauge className="h-5 w-5 text-[var(--accent)]" />
+            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
+              <Gauge className="h-5 w-5" />
+            </div>
             <div>
-              <p className="eyebrow">Scenario planner</p>
-              <h1 className="mt-1 text-3xl font-black tracking-[-0.06em] text-[var(--ink)]">What-if simulator</h1>
+              <span className="eyebrow-label">COUNTERFACTUAL ENGINE</span>
+              <h1 className="mt-0.5 text-xl font-bold text-white">What-If Scenario Simulator</h1>
             </div>
           </div>
-          <span className="inline-flex items-center gap-1.5 rounded-full border border-[var(--line)] bg-[var(--accent-soft)] px-3 py-1 text-xs font-bold text-[var(--accent)]">
-            {isSchool ? <School className="h-3.5 w-3.5" /> : <BookOpen className="h-3.5 w-3.5" />}
-            {isSchool ? 'School Model (0-20)' : 'College Model (GPA / %)'}
+          <span className="inline-flex items-center gap-1.5 rounded-md border border-slate-700 bg-slate-800 px-2.5 py-1 text-xs font-semibold text-slate-300">
+            {isSchool ? <School className="h-3.5 w-3.5 text-indigo-400" /> : <BookOpen className="h-3.5 w-3.5 text-indigo-400" />}
+            {isSchool ? 'Secondary (0-20)' : 'Higher Ed (GPA)'}
           </span>
         </div>
 
-        <div className="mt-8 space-y-6">
+        <p className="mt-4 text-xs text-slate-400">
+          Adjust key effort parameters below to test model counterfactual scenarios and view real-time score trajectory projections.
+        </p>
+
+        <div className="mt-6 space-y-6">
           {[
-            { label: 'Attendance', value: input.attendancePct, min: 40, max: 100, step: 1, key: 'attendancePct' },
-            { label: 'Assessment score', value: input.assessmentScore, min: 40, max: 100, step: 1, key: 'assessmentScore' },
-            { label: 'Assignment score', value: input.assignmentScore, min: 40, max: 100, step: 1, key: 'assignmentScore' },
+            { label: 'Cumulative Attendance Rate', value: input.attendancePct, unit: '%', min: 40, max: 100, step: 1, key: 'attendancePct', hint: 'Impacts baseline participation features' },
+            { label: 'Midterm Assessment Score', value: input.assessmentScore, unit: isSchool ? ' Marks' : '%', min: 40, max: 100, step: 1, key: 'assessmentScore', hint: 'Primary academic performance feature' },
+            { label: 'Assignment Completion & Effort', value: input.assignmentScore, unit: '%', min: 40, max: 100, step: 1, key: 'assignmentScore', hint: 'Study time & homework consistency proxy' },
           ].map((field) => (
-            <div key={field.label}>
-              <div className="mb-2 flex items-center justify-between text-sm font-medium text-[var(--ink)]">
-                <span>{field.label}</span>
-                <span>{field.value}%</span>
+            <div key={field.label} className="rounded-lg border border-slate-800 bg-slate-900/60 p-4">
+              <div className="mb-1.5 flex items-center justify-between text-xs font-semibold">
+                <span className="text-slate-200">{field.label}</span>
+                <span className="rounded bg-indigo-500/10 px-2 py-0.5 text-indigo-400 border border-indigo-500/20 font-bold">
+                  {field.value}{field.unit}
+                </span>
               </div>
+              <p className="text-[11px] text-slate-500 mb-3">{field.hint}</p>
               <input
                 type="range"
                 min={field.min}
@@ -93,67 +98,69 @@ export function WhatIfSimulator() {
                 step={field.step}
                 value={field.value}
                 onChange={(event) => updateField(field.key as keyof WhatIfInput, Number(event.target.value))}
-                style={sliderStyle}
-                className="h-2 w-full cursor-pointer appearance-none rounded-full bg-[var(--line)]"
+                className="h-2 w-full cursor-pointer appearance-none rounded-lg bg-slate-800 accent-indigo-500"
               />
             </div>
           ))}
         </div>
       </div>
 
-      <div className="rounded-[12px] border border-[var(--line)] bg-[var(--paper)] p-6">
-        <div className="flex items-center justify-between">
+      {/* Prediction Output Card */}
+      <div className="pro-card p-6">
+        <div className="flex items-center justify-between border-b border-slate-800 pb-4">
           <div>
-            <p className="eyebrow">Predicted outcome</p>
-            <h2 className="mt-1 text-xl font-bold text-[var(--ink)]">Scenario result</h2>
+            <span className="eyebrow-label">LIVE MODEL OUTPUT</span>
+            <h2 className="mt-0.5 text-lg font-bold text-white">Simulated Performance Result</h2>
           </div>
-          <div className="inline-flex items-center gap-2 rounded-full border border-[var(--line)] bg-[var(--paper)] px-2.5 py-1 text-xs font-semibold text-[var(--ink)]">
-            <Sparkles className="h-3.5 w-3.5 text-[var(--accent)]" />
-            {prediction.predictedRisk === 'low' ? 'Low risk' : prediction.predictedRisk === 'medium' ? 'Medium risk' : 'High risk'}
+          <div className="inline-flex items-center gap-1.5 rounded-full border border-slate-700 bg-slate-800 px-3 py-1 text-xs font-semibold text-slate-300">
+            <Sparkles className="h-3.5 w-3.5 text-indigo-400" />
+            {prediction.predictedRisk.toUpperCase()} RISK BAND
           </div>
         </div>
 
         {loading ? (
-          <div className="mt-8 rounded-[12px] border border-dashed border-[var(--line)] bg-[var(--paper)] p-5 text-sm text-[var(--ink-soft)]">Loading model-simulated scenario…</div>
+          <div className="mt-8 rounded-lg border border-slate-800 bg-slate-900/60 p-6 text-center text-xs font-semibold text-slate-400">
+            Executing scenario inference against live FastAPI model server…
+          </div>
         ) : error ? (
-          <div className="mt-8 rounded-[12px] border border-[var(--line)] bg-[var(--paper)] p-5 text-sm text-[var(--ink)]">The simulation could not be generated right now.</div>
+          <div className="mt-8 rounded-lg border border-slate-800 bg-slate-900/60 p-6 text-center text-xs font-semibold text-rose-400">
+            Scenario evaluation endpoint unavailable.
+          </div>
         ) : (
           <>
-            <div className="mt-8 rounded-[12px] border border-[var(--line)] bg-[var(--paper)] p-5">
-              <p className="text-xs uppercase tracking-[0.18em] text-[var(--ink-soft)]">{prediction.scenarioLabel}</p>
-              <div className="mt-3 flex items-end gap-3">
-                <span className="text-5xl font-black tracking-[-0.08em] text-[var(--ink)]">
+            <div className="mt-6 rounded-xl border border-slate-800 bg-slate-900/80 p-6 text-center">
+              <p className="text-[11px] font-semibold uppercase tracking-wider text-slate-400">{prediction.scenarioLabel}</p>
+              <div className="mt-2 flex items-baseline justify-center gap-2">
+                <span className="text-5xl font-extrabold tracking-tight text-white">
                   {isSchool ? (prediction.simulatedScore * 0.2).toFixed(1) : prediction.simulatedScore}
                 </span>
-                <span className="pb-1 text-sm font-semibold text-[var(--ink-soft)]">{isSchool ? '/20' : '/100'}</span>
+                <span className="text-xs font-semibold text-slate-400">{isSchool ? '/ 20 marks' : '% score'}</span>
               </div>
             </div>
 
-            <div className="mt-6 space-y-3 text-sm text-[var(--ink-soft)]">
-              <div className="flex items-center justify-between rounded-[12px] border border-[var(--line)] bg-[var(--paper)] p-3">
-                <span>Current performance</span>
-                <span className="font-semibold text-[var(--ink)]">{isSchool ? (prediction.currentScore * 0.2).toFixed(1) : prediction.currentScore}</span>
+            <div className="mt-5 space-y-3 text-xs">
+              <div className="flex items-center justify-between rounded-lg border border-slate-800 bg-slate-900/60 p-3">
+                <span className="text-slate-400">Baseline Score</span>
+                <span className="font-semibold text-slate-200">
+                  {isSchool ? (prediction.currentScore * 0.2).toFixed(1) : prediction.currentScore}
+                </span>
               </div>
-              <div className="flex items-center justify-between rounded-[12px] border border-[var(--line)] bg-[var(--paper)] p-3">
-                <span>Projected change</span>
-                <span className="font-semibold text-[var(--ink)]">+{prediction.deltaFromCurrent}%</span>
+              <div className="flex items-center justify-between rounded-lg border border-slate-800 bg-slate-900/60 p-3">
+                <span className="text-slate-400">Simulated Delta</span>
+                <span className="font-semibold text-emerald-400">+{prediction.deltaFromCurrent}%</span>
               </div>
-              <div className="flex items-center justify-between rounded-[12px] border border-[var(--line)] bg-[var(--paper)] p-3">
-                <span>Risk trend</span>
-                <span className="font-semibold text-[var(--ink)]">{prediction.predictedRisk === 'low' ? 'Stable' : prediction.predictedRisk === 'medium' ? 'Monitor' : 'Needs support'}</span>
+              <div className="flex items-center justify-between rounded-lg border border-slate-800 bg-slate-900/60 p-3">
+                <span className="text-slate-400">Risk Trajectory</span>
+                <span className="font-semibold text-white capitalize">{prediction.predictedRisk} Risk Band</span>
               </div>
             </div>
 
-            <div className="mt-6 rounded-[12px] border border-[var(--line)] bg-[var(--paper)] p-4 text-sm leading-7 text-[var(--ink-soft)]">
-              <p className="font-semibold text-[var(--ink)]">Model-simulated scenario</p>
-              <p className="mt-2">{prediction.explanation}</p>
+            <div className="mt-5 rounded-lg border border-slate-800 bg-slate-900/60 p-4 text-xs leading-relaxed text-slate-300">
+              <p className="font-bold text-white mb-1">Scenario Explanation</p>
+              <p>{prediction.explanation}</p>
             </div>
           </>
         )}
-
-        <div className="mt-8 flex justify-end">
-          <Button variant="primary" icon={<ArrowRight className="h-4 w-4" />}>Save scenario</Button>
-        </div>
       </div>
     </div>
   );

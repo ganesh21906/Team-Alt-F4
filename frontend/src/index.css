@@ -3,24 +3,36 @@
 @tailwind utilities;
 
 :root {
-  --bg: #07090E;
-  --paper: rgba(15, 23, 42, 0.75);
-  --paper-hover: rgba(30, 41, 59, 0.85);
-  --ink: #F8FAFC;
-  --ink-soft: #94A3B8;
-  --line: rgba(255, 255, 255, 0.09);
-  --accent: #3B82F6;
-  --accent-soft: rgba(59, 130, 246, 0.16);
-  --accent-gradient: linear-gradient(135deg, #3B82F6 0%, #6366F1 50%, #8B5CF6 100%);
-  --risk-low: #10B981;
-  --risk-mid: #F59E0B;
-  --risk-high: #EF4444;
+  --bg-app: #0F172A;
+  --bg-surface: #1E293B;
+  --bg-card: #1E293B;
+  --border-color: rgba(255, 255, 255, 0.1);
+  --border-hover: rgba(255, 255, 255, 0.2);
 
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  --text-primary: #F8FAFC;
+  --text-secondary: #94A3B8;
+  --text-muted: #64748B;
+
+  --accent-primary: #4F46E5;
+  --accent-primary-hover: #4338CA;
+  --accent-light: rgba(79, 70, 229, 0.15);
+
+  --risk-low-bg: rgba(16, 185, 129, 0.12);
+  --risk-low-text: #34D399;
+  --risk-low-border: rgba(16, 185, 129, 0.25);
+
+  --risk-mid-bg: rgba(245, 158, 11, 0.12);
+  --risk-mid-text: #FBBF24;
+  --risk-mid-border: rgba(245, 158, 11, 0.25);
+
+  --risk-high-bg: rgba(239, 68, 68, 0.12);
+  --risk-high-text: #F87171;
+  --risk-high-border: rgba(239, 68, 68, 0.25);
+
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   line-height: 1.5;
-  font-weight: 400;
-  color: var(--ink);
-  background-color: var(--bg);
+  color: var(--text-primary);
+  background-color: var(--bg-app);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -31,72 +43,65 @@
   box-sizing: border-box;
 }
 
-html {
-  scroll-behavior: smooth;
-  background-color: #07090E;
-}
-
-body {
+html, body {
   margin: 0;
-  min-width: 320px;
+  padding: 0;
   min-height: 100vh;
-  background-color: #07090E;
-  color: var(--ink);
-  overflow-x: hidden;
-}
-
-button,
-input,
-select {
-  font: inherit;
-}
-
-button {
-  transition: transform 0.2s ease, border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+  background-color: #0F172A;
+  color: #F8FAFC;
 }
 
 #root {
   min-height: 100vh;
-  background-color: #07090E;
+  background-color: #0F172A;
 }
 
-h1, h2, h3, h4, p {
-  margin-top: 0;
-}
-
-h1, h2, h3, h4 {
-  font-family: 'Space Grotesk', 'Inter', system-ui, sans-serif;
-  letter-spacing: -0.02em;
-  color: var(--ink);
-}
-
-p, span, label, input, select, button {
+h1, h2, h3, h4, h5, h6 {
   font-family: 'Inter', system-ui, sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  color: #F8FAFC;
+  margin: 0;
 }
 
-/* Glassmorphism Surface Base */
-.card-surface,
-.rounded-\[12px\],
-.rounded-\[20px\],
-.rounded-\[10px\] {
-  background-color: rgba(15, 23, 42, 0.75);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-color: rgba(255, 255, 255, 0.1) !important;
-  color: var(--ink);
-  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5), inset 0 1px 0 0 rgba(255, 255, 255, 0.08);
+p {
+  margin: 0;
+  color: #94A3B8;
 }
 
-/* Input Fields Styling */
+/* Professional Card Surfaces */
+.pro-card {
+  background-color: #1E293B;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.4);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.pro-card:hover {
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.pro-card-interactive:hover {
+  border-color: #6366F1;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px -4px rgba(79, 70, 229, 0.2);
+}
+
+/* Form inputs */
 input, select {
-  background-color: rgba(10, 15, 26, 0.8) !important;
+  background-color: #0F172A !important;
   border: 1px solid rgba(255, 255, 255, 0.12) !important;
   color: #F8FAFC !important;
+  border-radius: 8px !important;
+  padding: 10px 14px !important;
+  font-size: 0.925rem !important;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease !important;
 }
 
 input:focus, select:focus {
-  border-color: #3B82F6 !important;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25) !important;
+  border-color: #6366F1 !important;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2) !important;
   outline: none !important;
 }
 
@@ -104,88 +109,56 @@ input::placeholder {
   color: #64748B !important;
 }
 
-/* Button & CTA Enhancements */
-.cta, button[type="submit"] {
-  background: linear-gradient(135deg, #2563EB 0%, #4F46E5 100%) !important;
-  color: #FFFFFF !important;
-  border: 1px solid rgba(255, 255, 255, 0.2) !important;
-  box-shadow: 0 8px 20px -4px rgba(37, 99, 235, 0.4) !important;
-}
-
-.cta:hover, button[type="submit"]:hover {
-  background: linear-gradient(135deg, #1D4ED8 0%, #4338CA 100%) !important;
-  transform: translateY(-2px) !important;
-  box-shadow: 0 12px 25px -4px rgba(37, 99, 235, 0.5) !important;
-}
-
-/* Eyebrow badge styling */
-.eyebrow {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 11px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: #60A5FA !important;
+/* Buttons */
+.btn-primary {
+  background-color: #4F46E5;
+  color: #FFFFFF;
   font-weight: 600;
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: background-color 0.15s ease, transform 0.15s ease;
 }
 
-/* Ambient Background Light Orbs */
-.bg-ambient-mesh {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  background-color: #07090E;
-  overflow: hidden;
+.btn-primary:hover {
+  background-color: #4338CA;
+  transform: translateY(-1px);
 }
 
-.ambient-glow-1 {
-  position: absolute;
-  top: -10%;
-  left: 15%;
-  width: 600px;
-  height: 600px;
-  background: radial-gradient(circle, rgba(37, 99, 235, 0.18) 0%, rgba(79, 70, 229, 0.08) 50%, transparent 70%);
-  filter: blur(80px);
-  animation: glowFloat 18s ease-in-out infinite alternate;
+.btn-secondary {
+  background-color: #334155;
+  color: #F8FAFC;
+  font-weight: 600;
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: background-color 0.15s ease;
 }
 
-.ambient-glow-2 {
-  position: absolute;
-  bottom: 10%;
-  right: 10%;
-  width: 700px;
-  height: 700px;
-  background: radial-gradient(circle, rgba(124, 58, 237, 0.15) 0%, rgba(37, 99, 235, 0.06) 50%, transparent 70%);
-  filter: blur(90px);
-  animation: glowFloat 22s ease-in-out infinite alternate-reverse;
+.btn-secondary:hover {
+  background-color: #475569;
 }
 
-.ambient-glow-3 {
-  position: absolute;
-  top: 45%;
-  left: -5%;
-  width: 500px;
-  height: 500px;
-  background: radial-gradient(circle, rgba(14, 165, 233, 0.12) 0%, transparent 70%);
-  filter: blur(75px);
+/* Eyebrow Label */
+.eyebrow-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #818CF8;
 }
 
-@keyframes glowFloat {
-  0% { transform: translate(0, 0) scale(1); }
-  50% { transform: translate(30px, -20px) scale(1.08); }
-  100% { transform: translate(-20px, 20px) scale(0.95); }
-}
-
-/* Custom Scrollbars */
+/* Scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
+  height: 8px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.15);
-  border-radius: 999px;
+  background: #334155;
+  border-radius: 4px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #07090E;
+  background: #0F172A;
 }

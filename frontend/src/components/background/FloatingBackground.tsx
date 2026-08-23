@@ -1,9 +1,3 @@
 export function FloatingBackground() {
-  return (
-    <div aria-hidden="true" className="bg-ambient-mesh">
-      <div className="ambient-glow-1" />
-      <div className="ambient-glow-2" />
-      <div className="ambient-glow-3" />
-    </div>
-  );
+  return <div aria-hidden="true" className="pointer-events-none fixed inset-0 z-0 bg-[#0F172A]" />;
 }
